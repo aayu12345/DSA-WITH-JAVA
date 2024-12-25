@@ -1,0 +1,77 @@
+Problem --
+You are given a 2D matrix mat[][] of size n×m. The task is to modify the matrix such that 
+if mat[i][j] is 0, all the elements in the i-th row and j-th column are set to 0 and do it
+in constant space complexity.
+
+Input: mat[][] = [[1, -1, 1],
+                [-1, 0, 1],
+                [1, -1, 1]]
+                
+Output: [[1, 0, 1],
+        [0, 0, 0],
+        [1, 0, 1]]
+        
+Explanation: mat[1][1] = 0, so all elements in row 1 and column 1 are updated to zeroes.
+
+Expected Time Complexities - 0(mn)
+Space Complexities - O(1)
+
+
+
+Code-
+
+//Back-end complete function Template for Java
+class Solution {
+    public void setMatrixZeroes(int[][] matrix) {
+        int n = matrix.length; // number of rows
+        int m = matrix[0].length; // number of columns
+
+        boolean firstRowZero = false;  // To check if the first row should be zeroed
+        boolean firstColZero = false;  // To check if the first column should be zeroed
+
+        // Step 1: Check if first row or first column has any zeros
+        for (int i = 0; i < n; i++) {
+            if (matrix[i][0] == 0) {
+                firstColZero = true; // Mark the first column to be zeroed
+                break;
+            }
+        }
+        for (int j = 0; j < m; j++) {
+            if (matrix[0][j] == 0) {
+                firstRowZero = true; // Mark the first row to be zeroed
+                break;
+            }
+        }
+
+        // Step 2: Use the first row and first column to mark which rows and columns need to be zeroed
+        for (int i = 1; i < n; i++) {
+            for (int j = 1; j < m; j++) {
+                if (matrix[i][j] == 0) {
+                    matrix[i][0] = 0;  // Mark the first element of this row
+                    matrix[0][j] = 0;  // Mark the first element of this column
+                }
+            }
+        }
+
+        // Step 3: Zero out cells based on marks in the first row and column
+        for (int i = 1; i < n; i++) {
+            for (int j = 1; j < m; j++) {
+                if (matrix[i][0] == 0 || matrix[0][j] == 0) {
+                    matrix[i][j] = 0; // Zero out the cell
+                }
+            }
+        }
+
+        // Step 4: Zero out the first row and first column if needed
+        if (firstRowZero) {
+            for (int j = 0; j < m; j++) {
+                matrix[0][j] = 0; // Zero out the first row
+            }
+        }
+        if (firstColZero) {
+            for (int i = 0; i < n; i++) {
+                matrix[i][0] = 0; // Zero out the first column
+            }
+        }
+    }
+}
